@@ -63,7 +63,7 @@ async def inventory(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def idle(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if resources["Помидорчики: "] >= 0 and resources["Веточки: "] >= 0:
+    if resources["Помидорчики: "] >= 10 and resources["Веточки: "] >= 5:
         await update.message.reply_text("Ты скрафтил помидорный куст!")
         resources["Помидорчики: "] -= 10
         resources["Веточки: "] -= 5
