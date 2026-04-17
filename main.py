@@ -1,83 +1,77 @@
 import random
-import pygame
+from datetime import datetime
+from telegram import Update
+from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 
-pygame.init()
+TOKEN = "8478771233:AAF2a3uyK2kswvRfDe-C2DmAtrdRdqQg_MM"
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Ты долбаёб? Нахуй ты сюда пришёл? Скорее всего это твои последние минуты жизни, так что выборов у тебя не много. Въёбывай по кнопки Негр ой точнее хелп потому что ты, долбаёб, сам не справишься.")
 
-screen = pygame.display.set_mode((600, 600))
-caption = pygame.display.set_caption('Бем бем бем')
+async def commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "Сука тупое чмо ну ладно вот список команд но ты иди нахуй если че: \n"
+        "/start - Я тут блять даже объяснять не буду \n"
+        "/help - негр \n"
+        "/pohod - пойти нахуй \n"
+        "/craft - Наработки Макса"
+        )
 
-r_size, r_coordinate = (160, 160), (220, 440)
+last_day = None
+resources = {
+    "Помидорчики: ": 0,
+    "Веточки: ": 0,
+    "Помидорные кусты: ": 0,
+    "Крокодил: ": 0,
+    "Томатный потрошитель: ": 0,
+    "Селитра: ": 0,
+    "Помидорные бомбы: ": 0,
+    "кпоурп4део3йжлпзАКШВЫПЩОКПЩ: ": 0,
 
-run = True
-
-reset = pygame.image.load('C:/Users/Admin/Desktop/sprites/R.png')
-cards = {
-    'common': (pygame.image.load('C:/Users/Admin/Desktop/sprites/Common.png'), 0.5),
-    'rare': (pygame.image.load('C:/Users/Admin/Desktop/sprites/Rare.png'), 0.3),
-    'epic': (pygame.image.load('C:/Users/Admin/Desktop/sprites/Epic.png'), 0.1),
-    'mythic': (pygame.image.load('C:/Users/Admin/Desktop/sprites/Mythic.png'), 0.067),
-    'legendary': (pygame.image.load('C:/Users/Admin/Desktop/sprites/Legendary.png'), 0.033)
 }
 
-images = [v[0] for v in cards.values()]
-weights = [v[1] for v in cards.values()]
-scroll = False
-random_cards = random.choices(images, weights=weights, k=random.randint(200, 1500))
-start = pygame.time.get_ticks()
-end = (pygame.time.get_ticks() - start)
-seconds = random.randint(5, 10)
+async def pohod(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    global last_day
+    today = datetime.now().day
+    if today == last_day:
+        await update.message.reply_text("Ты уже ходил сегодня в поход!")
+        return
+    last_day = today
+    pomidors = random.randint(0, 5)
+    vetochki = random.randint(0, 3)
+    await update.message.reply_text(f"Ты отправился в поход и нашел помидор в количестве: {pomidors}, веточек: {vetochki}")
+    resources[0] += pomidors
+    resources[1] += vetochki
 
-xx = 0
+async def craft(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "Доступные крафты такому бездарю как ты: \n"
+        "Помидорный куст: x10 помидоров, x5 веточек \n"
+        "Селитра СКОРО \n"
+        "Помидорные бомбы СКОРО \n"
+        "Горшочек СКОРО"
+    )
 
-def falling():
-    if start - end < 50 and start - end > -50:
-        screen.blit(random_cards[0], (0, 0))
+async def inventory(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(
+        "Твой инвентарь: \n"
+        f"Помидорчики: {resources[0]}"
+        f"Веточки: {resources[1]}"
+    )
 
-def render():
-    global xx
-    screen.blit(pygame.transform.scale(reset, r_size), r_coordinate)
-    for i in range(len(random_cards)):
-        if i*100+xx > -90 and i*100+xx < 600:
-            screen.blit(pygame.transform.scale(random_cards[i], (90, 128)), (i*100+xx, 100))
+async def idle(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if resources[0] >= 10 and resources[1] >= 5:
+        await update.message.reply_text("Ты скрафтил помидорный куст!")
+        resources[0] -= 10
+        resources[1] -= 5
+        resources[2] += 1
 
-def events():
-    global run, reset, xx, scroll, start, seconds, end
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-        if event.type == pygame.MOUSEBUTTONDOWN and x < r_coordinate[0] + r_size[0] and x > r_coordinate[0] and \
-                y < r_coordinate[1] + r_size[1] and y > r_coordinate[1]:
-            reset = pygame.image.load('C:/Users/Admin/Desktop/sprites/R hold.png')
-            scroll = True
-        else:
-            if x < r_coordinate[0] + r_size[0] and x > r_coordinate[0] and y < r_coordinate[1] + r_size[1] and y > \
-                r_coordinate[1]:
-                reset = pygame.image.load('C:/Users/Admin/Desktop/sprites/R dir.png')
-            else:
-                reset = pygame.image.load('C:/Users/Admin/Desktop/sprites/R.png')
-    if scroll:
-        xx -= 10
-        if end // 1000 >= seconds:
-            seconds = random.randint(5, 10)
-            start = end
-            scroll = False
-        end = pygame.time.get_ticks()
-        return end
-    return seconds
+app = ApplicationBuilder().token(TOKEN).build()
 
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("help", commands))
+app.add_handler(CommandHandler("pohod", pohod))
+app.add_handler(CommandHandler("craft", craft))
+app.add_handler(CommandHandler("inventory", inventory))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex("Помидорный куст"), idle))
 
-
-white = (255, 255, 255)
-black = (0, 0, 0)
-
-while run:
-    x, y = pygame.mouse.get_pos()
-    screen.fill(white)
-    events()
-    falling()
-    print(start, end)
-    render()
-    pygame.display.flip()
-    pygame.time.Clock().tick(60)
-
-pygame.quit()
+app.run_polling()
