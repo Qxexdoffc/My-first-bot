@@ -78,6 +78,6 @@ app.add_handler(CommandHandler("help", commands))
 app.add_handler(CommandHandler("pohod", pohod))
 app.add_handler(CommandHandler("craft", craft))
 app.add_handler(CommandHandler("inventory", inventory))
-app.add_handler(MessageHandler(filters.TEXT & filters.Regex("Помидорный куст"), idle))
+app.add_handler(MessageHandler(filters.TEXT & filters.Regex(r".*Помидорный куст.*"), idle))
 
 app.run_polling()
