@@ -69,7 +69,7 @@ async def idle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         resources["Веточки: "] -= 5
         resources["Помидорные кусты: "] += 1
     else:
-        await update.message.reply_photo(photo="https://www.meme-arsenal.com/memes/c97316ed67af27db8d77948499abddd2.jpg")
+        await update.message.reply_photo(photo="https://www.meme-arsenal.com/memes/c97316ed67af27db8d77948499abddd2.jpg", caption=f"НЕ ХВАТАЕТ РЕСУРСОВ!\n{resources})
 
 app = ApplicationBuilder().token(TOKEN).build()
 
