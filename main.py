@@ -3,7 +3,6 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 
-TOKEN = "8478771233:AAF2a3uyK2kswvRfDe-C2DmAtrdRdqQg_MM"
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ты долбаёб? Нахуй ты сюда пришёл? Скорее всего это твои последние минуты жизни, так что выборов у тебя не много. Въёбывай по кнопки Негр ой точнее хелп потому что ты, долбаёб, сам не справишься.")
 
@@ -13,7 +12,8 @@ async def commands(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "/start - Я тут блять даже объяснять не буду \n"
         "/help - негр \n"
         "/pohod - пойти нахуй \n"
-        "/craft - Наработки Макса"
+        "/craft - Наработки Макса \n"
+        "/inventory - Посмотреть инвентарь чмошника"
         )
 
 last_day = None
@@ -55,8 +55,8 @@ async def craft(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def inventory(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Твой инвентарь: \n"
-        f"Помидорчики: {resources[0]}"
-        f"Веточки: {resources[1]}"
+        f"Помидорчики: {resources['Помидорчики: ']}"
+        f"Веточки: {resources['Веточки: ']}"
     )
 
 async def idle(update: Update, context: ContextTypes.DEFAULT_TYPE):
