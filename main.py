@@ -3,6 +3,8 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 
+TOKEN = os.getenv("TOKEN")
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ты долбаёб? Нахуй ты сюда пришёл? Скорее всего это твои последние минуты жизни, так что выборов у тебя не много. Въёбывай по кнопки Негр ой точнее хелп потому что ты, долбаёб, сам не справишься.")
 
