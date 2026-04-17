@@ -3,6 +3,7 @@ from datetime import datetime
 from telegram import Update
 from telegram.ext import ApplicationBuilder, MessageHandler, filters, ContextTypes, CommandHandler
 
+TOKEN = "8478771233:AAF2a3uyK2kswvRfDe-C2DmAtrdRdqQg_MM"
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Ты долбаёб? Нахуй ты сюда пришёл? Скорее всего это твои последние минуты жизни, так что выборов у тебя не много. Въёбывай по кнопки Негр ой точнее хелп потому что ты, долбаёб, сам не справишься.")
 
@@ -34,12 +35,13 @@ async def pohod(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if today == last_day:
         await update.message.reply_text("Ты уже ходил сегодня в поход!")
         return
-    last_day = today
-    pomidors = random.randint(0, 5)
-    vetochki = random.randint(0, 3)
-    await update.message.reply_text(f"Ты отправился в поход и нашел помидор в количестве: {pomidors}, веточек: {vetochki}")
-    resources[0] += pomidors
-    resources[1] += vetochki
+    else:
+        last_day = today
+        pomidors = random.randint(0, 5)
+        vetochki = random.randint(0, 3)
+        await update.message.reply_text(f"Ты отправился в поход и нашел помидор в количестве: {pomidors}, веточек: {vetochki}")
+        resources["Помидорчики: "] += pomidors
+        resources["Веточки: "] += vetochki
 
 async def craft(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
