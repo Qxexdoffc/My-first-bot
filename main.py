@@ -58,16 +58,18 @@ async def craft(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def inventory(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         "Твой инвентарь: \n"
-        f"Помидорчики: {resources['Помидорчики: ']}"
+        f"Помидорчики: {resources['Помидорчики: ']} \n"
         f"Веточки: {resources['Веточки: ']}"
     )
 
 async def idle(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    if resources[0] >= 10 and resources[1] >= 5:
+    if resources["Помидорчики: "] >= 10 and resources["Веточки: "] >= 5:
         await update.message.reply_text("Ты скрафтил помидорный куст!")
-        resources[0] -= 10
-        resources[1] -= 5
-        resources[2] += 1
+        resources["Помидорчики: "] -= 10
+        resources["Веточки: "] -= 5
+        resources["Помидорные кусты: "] += 1
+    else:
+        await update.message.reply_photo(photo="https://www.meme-arsenal.com/memes/c97316ed67af27db8d77948499abddd2.jpg")
 
 app = ApplicationBuilder().token(TOKEN).build()
 
